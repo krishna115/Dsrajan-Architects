@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
+import { FaEnvelope, FaPhone, FaMapMarkerAlt} from 'react-icons/fa';
 import { db } from '../firebase';
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 import type { Contact } from '../types/Contact'; 
 
 
