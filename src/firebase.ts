@@ -1,6 +1,5 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import { collection, doc, getDoc, getDocs, getFirestore, orderBy, query } from "firebase/firestore";
 import type { Project } from "./types/Project";
 import type { Blog } from "./types/Blog";
