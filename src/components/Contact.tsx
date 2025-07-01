@@ -68,7 +68,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                 <FaPhone className="mt-1 text-blue-500" />
                 <div>
                   <p className="font-medium">Phone</p>
-                  <p className="text-gray-600">+91 98765 43210</p>
+                  <p className="text-gray-600">+91 94525 62282</p>
                 </div>
               </div>
 
@@ -76,7 +76,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                 <FaMapMarkerAlt className="mt-1 text-blue-500" />
                 <div>
                   <p className="font-medium">Office</p>
-                  <p className="text-gray-600">Indore, Madhya Pradesh</p>
+                  <p className="text-gray-600">Kanpur, Uttar Pradesh</p>
                 </div>
               </div>
             </div>
