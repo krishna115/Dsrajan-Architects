@@ -31,7 +31,7 @@ export default function Footer() {
           <h3 className="text-lg font-semibold mb-4">Contact</h3>
           <ul className="text-sm text-gray-300 space-y-2">
             <li>Email: <a href="mailto:info@dsrajan.com" className="hover:text-white">info@dsrajan.com</a></li>
-            <li>Phone: <a href="tel:+911234567890" className="hover:text-white">+91 94525 62282</a></li>
+            <li>Phone: <a href="tel:+911234567890" className="hover:text-white">+916386769992</a></li>
             <li>Location: Uttar Pradesh, India</li>
           </ul>
         </div>
