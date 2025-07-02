@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 
-export function AutoResizingTextarea({
+export function AutoResizingTextArea({
   value,
   onChange,
   placeholder,

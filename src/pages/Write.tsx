@@ -3,7 +3,7 @@ import type { EditorBlock } from '../types/EditorBlock';
 import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import { db } from '../firebase';
 import type { Blog } from '../types/Blog';
-import { AutoResizingTextarea } from '../components/AutoResizingTextArea';
+import { AutoResizingTextArea } from '../components/AutoResizingTextArea';
 import { MdCancel } from 'react-icons/md';
 
 export default function Write() {
@@ -51,38 +51,38 @@ export default function Write() {
         switch (block.type) {
           case 'heading':
             return (
-              <AutoResizingTextarea
+              <AutoResizingTextArea
                 className="w-full text-3xl font-bold text-gray-800 focus:outline-none placeholder-gray-400"
                 placeholder="Heading"
                 value={block.content}
-                onChange={(e) => updateBlock(index, { ...block, content: e.target.value })}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => updateBlock(index, { ...block, content: e.target.value })}
               />
             );
           case 'subheading':
             return (
-              <AutoResizingTextarea
+              <AutoResizingTextArea
                 className="w-full text-xl font-semibold text-gray-700 focus:outline-none placeholder-gray-400"
                 placeholder="Subheading"
                 value={block.content}
-                onChange={(e) => updateBlock(index, { ...block, content: e.target.value })}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => updateBlock(index, { ...block, content: e.target.value })}
               />
             );
           case 'paragraph':
             return (
-              <AutoResizingTextarea
+              <AutoResizingTextArea
                 value={block.content}
-                onChange={(e) => updateBlock(index, { ...block, content: e.target.value })}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => updateBlock(index, { ...block, content: e.target.value })}
                 placeholder="Write something..."
                 className="w-full text-base leading-relaxed text-gray-800 focus:outline-none placeholder-gray-400"
               />
             );
           case 'quote':
             return (
-              <AutoResizingTextarea
+              <AutoResizingTextArea
                 className="w-full italic text-gray-600 focus:outline-none placeholder-gray-400 pl-4 border-l-4 border-gray-300 bg-gray-50"
                 placeholder="Quote"
                 value={block.content}
-                onChange={(e) => updateBlock(index, { ...block, content: e.target.value })}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => updateBlock(index, { ...block, content: e.target.value })}
               />
             );
           case 'list':
