@@ -3,6 +3,8 @@ import type { EditorBlock } from '../types/EditorBlock';
 import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import { db } from '../firebase';
 import type { Blog } from '../types/Blog';
+import { AutoResizingTextarea } from '../components/AutoResizingTextArea';
+import { MdCancel } from 'react-icons/md';
 
 export default function Write() {
   const [title, setTitle] = useState('');
@@ -27,68 +29,110 @@ export default function Write() {
     setBlocks(newBlocks);
   };
 
-  const renderBlockInput = (block: EditorBlock, index: number) => {
-    switch (block.type) {
-      case 'heading':
-      case 'subheading':
-      case 'paragraph':
-      case 'quote':
-        return (
-          <textarea
-            key={index}
-            className="w-full p-2 border rounded mb-4"
-            rows={block.type === 'paragraph' ? 4 : 2}
-            placeholder={block.type}
-            value={block.content}
-            onChange={(e) => updateBlock(index, { ...block, content: e.target.value })}
-          />
-        );
-      case 'list':
-        return (
-          <div key={index} className="space-y-2 mb-4">
-            {block.items.map((item, i) => (
-              <input
-                key={i}
-                className="w-full p-2 border rounded"
-                placeholder={`Item ${i + 1}`}
-                value={item}
-                onChange={(e) => {
-                  const newItems = [...block.items];
-                  newItems[i] = e.target.value;
-                  updateBlock(index, { ...block, items: newItems });
-                }}
-              />
-            ))}
-            <button
-              type="button"
-              className="text-blue-500 text-sm mt-1"
-              onClick={() => updateBlock(index, { ...block, items: [...block.items, ''] })}
-            >
-              + Add item
-            </button>
-          </div>
-        );
-      case 'image':
-        return (
-          <div key={index} className="space-y-2 mb-4">
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              placeholder="Image URL"
-              value={block.url}
-              onChange={(e) => updateBlock(index, { ...block, url: e.target.value })}
-            />
-            <input
-              type="text"
-              className="w-full p-2 border rounded"
-              placeholder="Caption"
-              value={block.caption || ''}
-              onChange={(e) => updateBlock(index, { ...block, caption: e.target.value })}
-            />
-          </div>
-        );
-    }
+  const deleteBlock = (index: number) => {
+    const updated = [...blocks];
+    updated.splice(index, 1);
+    setBlocks(updated);
   };
+
+  const renderBlockInput = (block: EditorBlock, index: number) => (
+    <div key={index} className="group relative mb-6">
+      {/* 🗑 Delete Icon on hover */}
+      <button
+        onClick={() => deleteBlock(index)}
+        className="absolute -right-6 top-2 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition"
+        title="Delete block"
+      >
+        <MdCancel size={20} />
+      </button>
+
+      {/* Render block type */}
+      {(() => {
+        switch (block.type) {
+          case 'heading':
+            return (
+              <AutoResizingTextarea
+                className="w-full text-3xl font-bold text-gray-800 focus:outline-none placeholder-gray-400"
+                placeholder="Heading"
+                value={block.content}
+                onChange={(e) => updateBlock(index, { ...block, content: e.target.value })}
+              />
+            );
+          case 'subheading':
+            return (
+              <AutoResizingTextarea
+                className="w-full text-xl font-semibold text-gray-700 focus:outline-none placeholder-gray-400"
+                placeholder="Subheading"
+                value={block.content}
+                onChange={(e) => updateBlock(index, { ...block, content: e.target.value })}
+              />
+            );
+          case 'paragraph':
+            return (
+              <AutoResizingTextarea
+                value={block.content}
+                onChange={(e) => updateBlock(index, { ...block, content: e.target.value })}
+                placeholder="Write something..."
+                className="w-full text-base leading-relaxed text-gray-800 focus:outline-none placeholder-gray-400"
+              />
+            );
+          case 'quote':
+            return (
+              <AutoResizingTextarea
+                className="w-full italic text-gray-600 focus:outline-none placeholder-gray-400 pl-4 border-l-4 border-gray-300 bg-gray-50"
+                placeholder="Quote"
+                value={block.content}
+                onChange={(e) => updateBlock(index, { ...block, content: e.target.value })}
+              />
+            );
+          case 'list':
+            return (
+              <div className="space-y-2">
+                {block.items.map((item, i) => (
+                  <input
+                    key={i}
+                    className="w-full text-base text-gray-800 focus:outline-none placeholder-gray-400 pl-4"
+                    placeholder={`• List item ${i + 1}`}
+                    value={item}
+                    onChange={(e) => {
+                      const newItems = [...block.items];
+                      newItems[i] = e.target.value;
+                      updateBlock(index, { ...block, items: newItems });
+                    }}
+                  />
+                ))}
+                <button
+                  type="button"
+                  className="text-sm text-blue-500 hover:underline"
+                  onClick={() => updateBlock(index, { ...block, items: [...block.items, ''] })}
+                >
+                  + Add item
+                </button>
+              </div>
+            );
+          case 'image':
+            return (
+              <div className="space-y-2">
+                <input
+                  type="text"
+                  className="w-full text-base text-gray-800 focus:outline-none placeholder-gray-400"
+                  placeholder="Image URL"
+                  value={block.url}
+                  onChange={(e) => updateBlock(index, { ...block, url: e.target.value })}
+                />
+                <input
+                  type="text"
+                  className="w-full text-sm text-gray-500 italic focus:outline-none placeholder-gray-300"
+                  placeholder="Caption (optional)"
+                  value={block.caption || ''}
+                  onChange={(e) => updateBlock(index, { ...block, caption: e.target.value })}
+                />
+              </div>
+            );
+        }
+      })()}
+    </div>
+  );
 
   const handleSubmit = async () => {
     if (!title || blocks.length === 0) {
@@ -98,12 +142,12 @@ export default function Write() {
 
     const blogData: Omit<Blog, 'id'> = {
       title: title.trim(),
-      tags: tags.split(',').map(tag => tag.trim()).filter(Boolean),
+      tags: tags.split(',').map((tag) => tag.trim()).filter(Boolean),
       blocks,
       author: 'Admin',
       createdAt: Timestamp.now(),
       thumbnailUrl: thumbnailUrl.trim() || undefined,
-      content: '', // optional, fallback for compatibility
+      content: '',
     };
 
     setIsSubmitting(true);
@@ -122,12 +166,12 @@ export default function Write() {
   };
 
   return (
-    <section className="max-w-4xl mx-auto px-6 py-12">
-      <h1 className="text-3xl font-bold mb-6">Write New Article</h1>
+    <section className="max-w-4xl mx-auto px-6 py-12 font-serif">
+      {/* <h1 className="text-4xl font-bold text-gray-900 mb-6">Write New Article</h1> */}
 
       <input
         type="text"
-        className="w-full p-3 border text-lg font-semibold rounded mb-4"
+        className="w-full text-5xl font-bold text-gray-800 focus:outline-none placeholder-gray-400 mb-6"
         placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
@@ -135,7 +179,7 @@ export default function Write() {
 
       <input
         type="text"
-        className="w-full p-2 border rounded mb-4"
+        className="w-full text-sm mb-4 focus:outline-none placeholder-gray-400 text-gray-500"
         placeholder="Thumbnail URL (optional)"
         value={thumbnailUrl}
         onChange={(e) => setThumbnailUrl(e.target.value)}
@@ -143,24 +187,22 @@ export default function Write() {
 
       <input
         type="text"
-        className="w-full p-2 border rounded mb-6"
+        className="w-full text-sm mb-8 focus:outline-none placeholder-gray-400 text-gray-500"
         placeholder="Tags (comma separated)"
         value={tags}
         onChange={(e) => setTags(e.target.value)}
       />
 
-      <div className="space-y-6">
-        {blocks.map((block, index) => (
-          <div key={index}>{renderBlockInput(block, index)}</div>
-        ))}
+      <div className="space-y-8">
+        {blocks.map((block, index) => renderBlockInput(block, index))}
       </div>
 
-      <div className="flex flex-wrap gap-2 mt-6">
+      <div className="flex flex-wrap gap-2 mt-10">
         {['heading', 'subheading', 'paragraph', 'quote', 'list', 'image'].map((type) => (
           <button
             key={type}
             type="button"
-            className="px-3 py-1 border rounded text-sm bg-gray-100 hover:bg-gray-200"
+            className="px-4 py-1.5 rounded-full bg-gray-100 text-sm hover:bg-gray-200 transition"
             onClick={() => addBlock(type as EditorBlock['type'])}
           >
             + {type}
@@ -171,7 +213,7 @@ export default function Write() {
       <button
         onClick={handleSubmit}
         disabled={isSubmitting}
-        className="mt-10 px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700"
+        className="mt-12 px-6 py-3 bg-green-600 text-white rounded hover:bg-green-700"
       >
         {isSubmitting ? 'Publishing...' : 'Publish'}
       </button>
