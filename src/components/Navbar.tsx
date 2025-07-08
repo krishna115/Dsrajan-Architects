@@ -46,7 +46,7 @@ export default function Navbar() {
               Work With Us <FaChevronDown size={12} />
             </button>
             <div className="absolute hidden group-hover:block bg-white shadow-lg rounded-md z-50 min-w-[240px] p-2">
-              <a href="#" className="block px-4 py-2 rounded hover:bg-gray-100">Architectural Writing Internship</a>
+<Link to="/writing-internship" className="block px-4 py-2 rounded hover:bg-gray-100">Architectural Writing Internship</Link>
             </div>
           </div>
 
@@ -55,9 +55,10 @@ export default function Navbar() {
               Submit <FaChevronDown size={12} />
             </button>
             <div className="absolute hidden group-hover:block bg-white shadow-lg rounded-md z-50 min-w-[260px] p-2">
-              <a href="#" className="block px-4 py-2 rounded hover:bg-gray-100">Submit Your Article</a>
-              <a href="#" className="block px-4 py-2 rounded hover:bg-gray-100">Submit Your Project</a>
-              <a href="#" className="block px-4 py-2 rounded hover:bg-gray-100">Submit Your Dissertation</a>
+              <Link to="/submit-your-story" className="block px-4 py-2 rounded hover:bg-gray-100">Submit Your Story</Link>
+              <Link to="/submit-your-project" className="block px-4 py-2 rounded hover:bg-gray-100">Submit Your Project</Link>
+              <Link to="/submit-your-dissertation" className="block px-4 py-2 rounded hover:bg-gray-100">Submit Your Dissertation</Link>
+
             </div>
           </div>
 
@@ -135,7 +136,8 @@ export default function Navbar() {
                   </button>
                   {openDropdown === 'work' && (
                     <ul className="mt-2 ml-3 space-y-1 text-sm">
-                      <li><a href="#">Architectural Writing Internship</a></li>
+                      <li><Link to="/writing-internship" className="block px-4 py-2 rounded hover:bg-gray-100">Architectural Writing Internship</Link>
+</li>
                     </ul>
                   )}
                 </div>
@@ -150,9 +152,21 @@ export default function Navbar() {
                   </button>
                   {openDropdown === 'submit' && (
                     <ul className="mt-2 ml-3 space-y-1 text-sm">
-                      <li><a href="#">Submit Your Article</a></li>
-                      <li><a href="#">Submit Your Project</a></li>
-                      <li><a href="#">Submit Your Dissertation</a></li>
+                       <li>
+      <Link to="/submit-your-story" onClick={() => setIsDrawerOpen(false)}>
+        Submit Your Story
+      </Link>
+    </li>
+                      <li>
+      <Link to="/submit-your-project" onClick={() => setIsDrawerOpen(false)}>
+        Submit Your Project
+      </Link>
+    </li>
+    <li>
+      <Link to="/submit-your-dissertation" onClick={() => setIsDrawerOpen(false)}>
+        Submit Your Dissertation
+      </Link>
+    </li>
                     </ul>
                   )}
                 </div>

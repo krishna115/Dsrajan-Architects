@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { collection, doc, getDoc, getDocs, getFirestore, orderBy, query } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, getFirestore, orderBy, query, Timestamp } from "firebase/firestore";
 import type { Project } from "./types/Project";
 import type { Blog } from "./types/Blog";
 import { getAuth } from "firebase/auth";
@@ -52,4 +52,22 @@ export const fetchBlogById = async (id: string): Promise<Blog | null> => {
     id: snapshot.id,
     ...snapshot.data(),
   } as Blog;
+};
+
+// Submit Writing Internship Application
+export const submitInternshipApplication = async (form: {
+  name: string;
+  email: string;
+  birthDate: string;
+  gender: string;
+  profession: string;
+  blogUrl: string;
+  driveFolderLink: string;
+  message: string;
+}) => {
+  await addDoc(collection(db, "writingInternshipApplications"), {
+    ...form,
+    createdAt: Timestamp.now(),
+  });
+
 };
