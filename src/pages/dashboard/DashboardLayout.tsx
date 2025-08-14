@@ -1,5 +1,5 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Home, FileText, BookOpen, Send, Users, ClipboardList, LayoutDashboard } from 'lucide-react';
+import { FileText, BookOpen, Send, Users, ClipboardList, LayoutDashboard } from 'lucide-react';
 
 export default function DashboardLayout() {
   return (
