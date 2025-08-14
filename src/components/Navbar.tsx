@@ -62,7 +62,7 @@ export default function Navbar() {
             </div>
           </div>
 
-          <a href="#contact" className="hover:text-blue-400">Contact Us</a>
+          <Link to="/contact-us" className="hover:text-blue-400 p-2">Contact Us</Link>
         </div>
 
         {/* Mobile Hamburger Icon */}
@@ -171,7 +171,7 @@ export default function Navbar() {
                   )}
                 </div>
 
-                <a href="#contact" onClick={() => setIsDrawerOpen(false)}>Contact Us</a>
+          <Link to="/contact-us" className="hover:text-blue-400 p-2">Contact Us</Link>
               </div>
             </motion.aside>
           </>

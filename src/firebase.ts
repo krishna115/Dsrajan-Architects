@@ -65,7 +65,7 @@ export const submitInternshipApplication = async (form: {
   driveFolderLink: string;
   message: string;
 }) => {
-  await addDoc(collection(db, "writingInternshipApplications"), {
+  await addDoc(collection(db, "writing_internship_submission"), {
     ...form,
     createdAt: Timestamp.now(),
   });

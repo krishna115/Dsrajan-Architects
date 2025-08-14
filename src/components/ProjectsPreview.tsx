@@ -1,31 +1,23 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import projectImg from '../assets/hero.jpg'; // Replace with actual images
-
-const projects = [
-  {
-    id: 1,
-    title: 'Courtyard House',
-    type: 'Residential',
-    location: 'Indore, MP',
-    image: projectImg,
-  },
-  {
-    id: 2,
-    title: 'Glass Facade Office',
-    type: 'Commercial',
-    location: 'Bhopal, MP',
-    image: projectImg,
-  },
-  {
-    id: 3,
-    title: 'Sustainable Villa',
-    type: 'Eco-Luxury',
-    location: 'Pune, MH',
-    image: projectImg,
-  },
-];
+import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
+import { db } from '../firebase'; // Adjust path if needed
+import type { Project } from '../types/Project';
 
 export default function ProjectsPreview() {
+  const [projects, setProjects] = useState<Project[]>([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const q = query(collection(db, 'projects'), orderBy('createdAt', 'desc'), limit(3));
+      const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Project[];
+      setProjects(data);
+    };
+
+    fetchProjects();
+  }, []);
+
   return (
     <section id="projects" className="bg-white py-20 px-6">
       <div className="max-w-7xl mx-auto text-center">
@@ -40,7 +32,7 @@ export default function ProjectsPreview() {
               className="rounded overflow-hidden shadow hover:shadow-lg transition"
             >
               <img
-                src={project.image}
+                src={project.thumbnailUrl}
                 alt={project.title}
                 className="h-64 w-full object-cover"
               />
@@ -49,14 +41,13 @@ export default function ProjectsPreview() {
                   {project.title}
                 </h3>
                 <p className="text-sm text-gray-600">
-                  {project.type} • {project.location}
+                  {project.description}
                 </p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* View All Projects Button */}
         <div className="mt-12">
           <Link
             to="/projects"

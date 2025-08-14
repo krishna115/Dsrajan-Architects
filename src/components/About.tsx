@@ -22,7 +22,7 @@ export default function About() {
           {/* Title aligned to top */}
           <div className="mb-6">
             <h2 className="text-5xl font-semibold text-gray-900 leading-tight">
-              About <span className="font-light">/ DSrajan Architects</span>
+              About <span className="font-light">/ <b><i>D</i></b>Srajan Architects</span>
             </h2>
           </div>
 
